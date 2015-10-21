@@ -13,7 +13,7 @@ boolean rightPressed = false;
 float speed = 5;
 float fx = 500;
 float fy = 240;
-float ey = random(320);
+
 int cc = 0;
 int cs = 0;
 int tmp =0;
@@ -21,6 +21,8 @@ int bg1x = 640;
 int bg2x = 0;
 boolean tmp2 = false; 
 int count = 0;
+float eyfinal;
+int changetmp = 0;
 void setup() {
   size(641, 482);
   bg1 = loadImage("img/bg1.png");
@@ -57,6 +59,11 @@ void setup() {
       image(start2,0,0);           
      }
    }
+   if(tmp%2==0){
+     ex = 0;
+     ey = random(320);
+   }
+   
    
    if (isPlaying) {//開始u
      background(0);//頁面刷新
@@ -69,10 +76,14 @@ void setup() {
       bg2x%=1280;
       x+=2;
      float ex = x % 640; //敵機速度
+     
+     if(count%640==0){
+       ey=fy;}
      image(enemy,ex,ey);//敵機位置
      if(ex>=640){//敵機超出頁面後重返位置0
      ex = 0;
      }
+     
       
      image(fighter, fx, fy);//我方位置
      stroke(250, 3, 3);//血條
@@ -83,25 +94,30 @@ void setup() {
      image(treasure, t, s);//寶物位置
      pressSetting();
      border(); //<>//
-     if (fx <= ex + 20 && fx >= ex - 20) {
-       if (fy <= ey + 20 && fy >= ey - 20) {
-         c--;
-       }
+     if (fx <= ex+60 && fx >= ex) {
+       if (fy <= ey + 60 && fy >= ey) {
+            c-=38;
+            changetmp++;
+    
+     }
+     }
 
      if(t-20<fx && fx <= t+20){
        if(s-20 < fy && fy<=s+20 ){
-         updateTreasure();
+         
        }
      }
      if (c <= 0) {
          c = 0;
+        isPlaying =false;
          image(end1, 0, 0);
+         
           cc=0;
        }
      }
 
    }
-  }
+  
   
   void border(){
   if (fx >= 600) {//橫向範圍設定
