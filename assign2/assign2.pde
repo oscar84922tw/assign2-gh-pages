@@ -3,7 +3,7 @@ int x = 0;
 int y = 0;
 int z = -640;
 int c = 38;
-int t = floor(random(640));
+int t = floor(random(600));
 int s = floor(random(480));
 boolean isPlaying = false;
 boolean upPressed = false;
@@ -23,10 +23,13 @@ int count = 0;
 float eyfinal;
 int changetmp = 0;
 int ex = 0;
-int ey = floor(random(430));
+int ey ;
 boolean changeTreasurePlace = false;
 boolean changeEnemyPlace = false;
 boolean changeStart = false;
+float fytmp = 0;
+int eyPro = 0;
+int exPro = 0;
 void setup() {
   size(641, 482);
   bg1 = loadImage("img/bg1.png");
@@ -78,22 +81,36 @@ void setup() {
    }
    if (isPlaying) {//game start
      background(0);//bg0
-    
      image(bg1,bg1x-640, 0);//initial bg1
      image(bg2,bg2x-640, 0);//initial bg2
-      bg1x++;//bg1 Xspeed
-      bg2x++;//bg2 Xspeed
+      bg1x+=2;//bg1 Xspeed
+      bg2x+=2;//bg2 Xspeed
       bg1x%=1280;// if bg1 to 1280,it will go back 0;
       bg2x%=1280;// like bg2;
-      x+=2;//enemy speed
-      ex = x % 640; //enemy location
+      ex+=2;//enemy speed
+      ex%= 640; //enemy location
 
-     image(enemy,ex,ey);//enemy initial
-     if(ex>=640){//enemy border
-     ex = 0;
+     image(enemy,ex,ey);
+     
+     if(fy>ey){
+       ey+=1; 
+     }else{
+       ey-=1;
+     } //<>//
+     
+     
+     
+     if(ex==640){//enemy border
+     updateEnemy();
+            //changetmp++;
+        if(changeEnemyPlace){
+            ex=0;//intial x
+            //ex=0;
+            ey=floor(random(430));
+            changeEnemyPlace = false;
+            }
      }
      
-      
      image(fighter, fx, fy);//fighter location
      stroke(250, 3, 3);//blood
      strokeWeight(18);
@@ -102,13 +119,11 @@ void setup() {
      image(treasure, t, s);//initial treasure
      pressSetting();
      border();   //<>//
-     if (fx <= ex+20 && fx > ex-20) {
-       if (fy <= ey + 20 && fy >= ey-20) {
-           
+     if (fx <= ex+50 && fx > ex-50) {
+       if (fy <= ey + 50 && fy >= ey-50) {
             updateEnemy();
-            //changetmp++;
             if(changeEnemyPlace){
-            x=0;//intial x
+           // x=0;//intial x
             ex=0;
             ey=floor(random(430));
             changeEnemyPlace = false;
@@ -118,12 +133,12 @@ void setup() {
      }
      }
 
-     if(t-20 <fx && fx <= t+20){
-       if(s-20 < fy && fy<=s+20 ){
+     if(t-50 <fx && fx <= t+45){
+       if(s-50 < fy && fy<=s+50 ){
          updateTreasure();
          if(changeTreasurePlace){
            s=floor(random(430));
-           t=floor(random(640));
+           t=floor(random(600));
            changeTreasurePlace=false;
          }
          c+=38;
