@@ -26,6 +26,7 @@ int ex = 0;
 int ey = floor(random(430));
 boolean changeTreasurePlace = false;
 boolean changeEnemyPlace = false;
+boolean changeStart = false;
 void setup() {
   size(641, 482);
   bg1 = loadImage("img/bg1.png");
@@ -54,14 +55,27 @@ void setup() {
    background(bg1);//bg
    image(start1, 0, 0); //start initial
    count ++;//framecount
-   
+
    if(tmp2){//count press time and initial start2
-     if(count%30==0){
+     if(count%30==0 && changeStart==false){ //start game with norepeat
       isPlaying = true;
-     }else{
+      
+     }else if(!changeStart){
       image(start2,0,0);           
+     }else if(changeStart){
+     image(end1, 0, 0);}
+   }else if(changeStart){
+   
+   if(count%30==0){
+     isPlaying = true;
+     }else{
+     image(end2,0,0);
+     c=38;
+     tmp2=false;
+     changeStart=false;
+     
      }
-   } 
+   }
    if (isPlaying) {//game start
      background(0);//bg0
     
@@ -94,7 +108,8 @@ void setup() {
             updateEnemy();
             //changetmp++;
             if(changeEnemyPlace){
-            ex= 0;
+            x=0;//intial x
+            ex=0;
             ey=floor(random(430));
             changeEnemyPlace = false;
             }
@@ -117,13 +132,12 @@ void setup() {
      if (c <= 0) {
          c = 0;
         isPlaying =false;
-         image(end1, 0, 0);
-         
-          cc=0;
-       }
+        changeStart = true; 
+     
+   }
        
       if(c>=190){
-      c=190;
+        c=190;
       }
      }
 
