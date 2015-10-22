@@ -1,8 +1,8 @@
-PImage bg1,bg2,treasure,hp,fighter,enemy,end1,end2,start1,start2,enemy1,bomb;
+PImage bg1,bg2,treasure,hp,fighter,enemy,end1,end2,start1,start2,enemy1,bomb;//image imort 
 int x = 0;
 int y = 0;
 int z = -640;
-int c = 190;
+int c = 38;
 int t = floor(random(640));
 int s = floor(random(480));
 boolean isPlaying = false;
@@ -13,7 +13,6 @@ boolean rightPressed = false;
 float speed = 5;
 float fx = 500;
 float fy = 240;
-
 int cc = 0;
 int cs = 0;
 int tmp =0;
@@ -23,6 +22,10 @@ boolean tmp2 = false;
 int count = 0;
 float eyfinal;
 int changetmp = 0;
+int ex = 0;
+int ey = floor(random(430));
+boolean changeTreasurePlace = false;
+boolean changeEnemyPlace = false;
 void setup() {
   size(641, 482);
   bg1 = loadImage("img/bg1.png");
@@ -42,69 +45,73 @@ void setup() {
   frameRate(120);
 }
 
- void mouseClicked(){
- tmp2 = true;  
+ void mousePressed(){
+ tmp2 = !tmp2;  
  
  }
  
-  void draw() {
+ void draw() {
+   background(bg1);//bg
+   image(start1, 0, 0); //start initial
+   count ++;//framecount
    
-   background(bg1);//背景
-   image(start1, 0, 0); //開始畫面
-   count ++;
-   if(tmp2){
+   if(tmp2){//count press time and initial start2
      if(count%30==0){
       isPlaying = true;
      }else{
       image(start2,0,0);           
      }
-   }
-   if(tmp%2==0){
-     ex = 0;
-     ey = random(320);
-   }
-   
-   
-   if (isPlaying) {//開始u
-     background(0);//頁面刷新
+   } 
+   if (isPlaying) {//game start
+     background(0);//bg0
     
-     image(bg1,bg1x-640, 0);//bg1
-     image(bg2,bg2x-640, 0);//bg2
-      bg1x++;
-      bg2x++;
-      bg1x%=1280;
-      bg2x%=1280;
-      x+=2;
-     float ex = x % 640; //敵機速度
-     
-     if(count%640==0){
-       ey=fy;}
-     image(enemy,ex,ey);//敵機位置
-     if(ex>=640){//敵機超出頁面後重返位置0
+     image(bg1,bg1x-640, 0);//initial bg1
+     image(bg2,bg2x-640, 0);//initial bg2
+      bg1x++;//bg1 Xspeed
+      bg2x++;//bg2 Xspeed
+      bg1x%=1280;// if bg1 to 1280,it will go back 0;
+      bg2x%=1280;// like bg2;
+      x+=2;//enemy speed
+      ex = x % 640; //enemy location
+
+     image(enemy,ex,ey);//enemy initial
+     if(ex>=640){//enemy border
      ex = 0;
      }
      
       
-     image(fighter, fx, fy);//我方位置
-     stroke(250, 3, 3);//血條
-     strokeWeight(18);//血條寬度
-     line(58, 38, 58 + c, 38);//血量
-     image(hp, 50, 25);//血量框
-     //x += 2; //你他媽這三小變數,10/21幹我知道了
-     image(treasure, t, s);//寶物位置
+     image(fighter, fx, fy);//fighter location
+     stroke(250, 3, 3);//blood
+     strokeWeight(18);
+     line(58, 38, 58 + c, 38);//blood line
+     image(hp, 50, 25);//initial hp
+     image(treasure, t, s);//initial treasure
      pressSetting();
-     border(); //<>//
-     if (fx <= ex+60 && fx >= ex) {
-       if (fy <= ey + 60 && fy >= ey) {
-            c-=38;
-            changetmp++;
+     border();   //<>//
+     if (fx <= ex+20 && fx > ex-20) {
+       if (fy <= ey + 20 && fy >= ey-20) {
+           
+            updateEnemy();
+            //changetmp++;
+            if(changeEnemyPlace){
+            ex= 0;
+            ey=floor(random(430));
+            changeEnemyPlace = false;
+            }
+             c-=38;
     
      }
      }
 
-     if(t-20<fx && fx <= t+20){
+     if(t-20 <fx && fx <= t+20){
        if(s-20 < fy && fy<=s+20 ){
-         
+         updateTreasure();
+         if(changeTreasurePlace){
+           s=floor(random(430));
+           t=floor(random(640));
+           changeTreasurePlace=false;
+         }
+         c+=38;
        }
      }
      if (c <= 0) {
@@ -114,6 +121,10 @@ void setup() {
          
           cc=0;
        }
+       
+      if(c>=190){
+      c=190;
+      }
      }
 
    }
@@ -201,9 +212,10 @@ void setup() {
   }
   
   void updateTreasure(){
-      image(enemy,random(480),random(240));
-  }
+     changeTreasurePlace = true;
+    
+}
   
   void updateEnemy(){
-  
+    changeEnemyPlace = true;
   }
