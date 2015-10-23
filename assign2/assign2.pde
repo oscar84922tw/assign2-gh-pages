@@ -2,6 +2,7 @@ PImage bg1,bg2,treasure,hp,fighter,enemy,end1,end2,start1,start2,enemy1,bomb;//i
 int x = 0;
 int y = 0;
 int z = -640;
+int more = 5;
 int c = 38;
 int t = floor(random(600));
 int s = floor(random(480));
@@ -87,7 +88,11 @@ void setup() {
       bg2x+=2;//bg2 Xspeed
       bg1x%=1280;// if bg1 to 1280,it will go back 0;
       bg2x%=1280;// like bg2;
-      ex+=2;//enemy speed
+      if(count%1200000==0){
+        more+=1;
+      }
+      
+      ex+=more;//enemy speed
       ex%= 640; //enemy location
 
      image(enemy,ex,ey);
@@ -147,6 +152,8 @@ void setup() {
      if (c <= 0) {
          c = 0;
         isPlaying =false;
+        fx = 500;
+        fy = 240;
         changeStart = true; 
      
    }
