@@ -31,6 +31,7 @@ boolean changeStart = false;
 float fytmp = 0;
 int eyPro = 0;
 int exPro = 0;
+boolean changeTmp = false;
 void setup() {
   size(641, 482);
   bg1 = loadImage("img/bg1.png");
@@ -51,8 +52,18 @@ void setup() {
 }
 
  void mousePressed(){
- tmp2 = !tmp2;  
- 
+ if(!changeTmp){
+   if(mouseX > 200 && mouseX <= 430){
+   if(mouseY > 380 && mouseY < 420 ){
+   changeTmp = true;
+     tmp2 = !tmp2;  
+   }
+ }}else if(changeTmp){
+   if(mouseX > 200 && mouseX <= 430){
+   if(mouseY > 300 && mouseY < 340 ){
+   tmp2 = !tmp2;  
+   changeTmp = false;}
+ }}
  }
  
  void draw() {
@@ -146,7 +157,7 @@ void setup() {
            t=floor(random(600));
            changeTreasurePlace=false;
          }
-         c+=38;
+         c+=19;
        }
      }
      if (c <= 0) {
